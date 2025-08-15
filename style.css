@@ -88,24 +88,111 @@ h1 {
     box-shadow: none;
 }
 
-.instructions {
-    margin-top: 20px;
-    text-align: left;
-    background: rgba(74, 85, 104, 0.1);
-    padding: 20px;
-    border-radius: 10px;
-}
-
-.instructions h3 {
-    color: #4a5568;
-    margin-bottom: 10px;
+/* 查看游戏说明按钮样式 */
+.instructions-toggle {
     text-align: center;
+    margin: 20px 0;
 }
 
-.instructions p {
-    margin: 8px 0;
+#showInstructionsBtn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+#showInstructionsBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+#showInstructionsBtn:active {
+    transform: translateY(0);
+}
+
+/* 弹窗样式 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: #ffffff;
+    margin: 10% auto;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 25px 15px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.modal-header h3 {
+    color: #4a5568;
+    margin: 0;
+    font-size: 20px;
+}
+
+.close {
+    color: #a0aec0;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    line-height: 1;
+}
+
+.close:hover {
+    color: #e53e3e;
+}
+
+.modal-body {
+    padding: 20px 25px 25px;
+}
+
+.modal-body p {
+    margin: 12px 0;
     color: #718096;
-    line-height: 1.5;
+    line-height: 1.6;
+    font-size: 15px;
+}
+
+.modal-body p:first-child {
+    margin-top: 0;
+}
+
+.modal-body p:last-child {
+    margin-bottom: 0;
 }
 
 /* 移动端方向控制 - 游戏手柄风格 */
@@ -113,13 +200,15 @@ h1 {
     display: none;
     margin: 20px 0;
     justify-content: flex-start;
+    align-items: center;
     padding-left: 30px;
+    gap: 60px;
 }
 
 .d-pad {
     position: relative;
-    width: 120px;
-    height: 120px;
+    width: 150px;
+    height: 150px;
     background: #2d3748;
     border-radius: 20px;
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.3), 0 4px 15px rgba(0,0,0,0.2);
@@ -141,23 +230,17 @@ h1 {
         display: none;
     }
     
-    .instructions::before {
-        content: "使用左侧十字键控制蛇的移动";
-        display: block;
-        margin: 8px 0;
-        color: #718096;
-        line-height: 1.5;
-    }
+    /* 移除了十字键提示文本 */
 }
 
 .d-btn {
     position: absolute;
-    width: 40px;
-    height: 40px;
+    width: 55px;
+    height: 55px;
     border: none;
     background: linear-gradient(145deg, #4a5568, #2d3748);
     color: #e2e8f0;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
     cursor: pointer;
     transition: all 0.15s ease;
@@ -174,34 +257,34 @@ h1 {
 
 .d-up {
     top: 5px;
-    left: 40px;
-    border-radius: 8px 8px 4px 4px;
+    left: 47.5px;
+    border-radius: 10px 10px 5px 5px;
 }
 
 .d-down {
     bottom: 5px;
-    left: 40px;
-    border-radius: 4px 4px 8px 8px;
+    left: 47.5px;
+    border-radius: 5px 5px 10px 10px;
 }
 
 .d-left {
-    top: 40px;
+    top: 47.5px;
     left: 5px;
-    border-radius: 8px 4px 4px 8px;
+    border-radius: 10px 5px 5px 10px;
 }
 
 .d-right {
-    top: 40px;
+    top: 47.5px;
     right: 5px;
-    border-radius: 4px 8px 8px 4px;
+    border-radius: 5px 10px 10px 5px;
 }
 
 .d-center {
     position: absolute;
-    top: 40px;
-    left: 40px;
-    width: 40px;
-    height: 40px;
+    top: 47.5px;
+    left: 47.5px;
+    width: 55px;
+    height: 55px;
     background: #1a202c;
     border-radius: 50%;
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
@@ -210,6 +293,51 @@ h1 {
 /* 按钮按下效果 */
 .d-btn:hover {
     background: linear-gradient(145deg, #5a6578, #3d4852);
+}
+
+/* 加速按钮样式 */
+.speed-boost-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.speed-boost-btn {
+    width: 70px;
+    height: 70px;
+    border: none;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #f56565, #e53e3e);
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 1px 2px rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.speed-boost-btn:active {
+    background: linear-gradient(145deg, #e53e3e, #c53030);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
+    transform: translateY(2px);
+}
+
+.speed-boost-btn:hover {
+    background: linear-gradient(145deg, #fc8181, #f56565);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.4), inset 0 1px 2px rgba(255,255,255,0.2);
+}
+
+.speed-boost-label {
+    color: #718096;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
 }
 
 @media (max-width: 600px) {
@@ -221,13 +349,7 @@ h1 {
         display: none;
     }
     
-    .instructions::before {
-        content: "使用下方十字键控制蛇的移动";
-        display: block;
-        margin: 8px 0;
-        color: #718096;
-        line-height: 1.5;
-    }
+    /* 移除了十字键提示文本 */
 }
 @media (max-width: 600px) {
     .game-container {
@@ -258,5 +380,34 @@ h1 {
     .game-controls button {
         margin: 5px;
         padding: 10px 20px;
+    }
+    
+    /* 移动端弹窗适配 */
+    .modal-content {
+        margin: 15% auto;
+        width: 95%;
+        max-width: none;
+    }
+    
+    .modal-header {
+        padding: 15px 20px 10px;
+    }
+    
+    .modal-header h3 {
+        font-size: 18px;
+    }
+    
+    .modal-body {
+        padding: 15px 20px 20px;
+    }
+    
+    .modal-body p {
+        font-size: 14px;
+        margin: 10px 0;
+    }
+    
+    #showInstructionsBtn {
+        padding: 10px 20px;
+        font-size: 14px;
     }
 }

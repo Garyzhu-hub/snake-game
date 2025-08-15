@@ -29,15 +29,32 @@
                 <button id="downBtn" class="d-btn d-down">▼</button>
                 <div class="d-center"></div>
             </div>
+            <div class="speed-boost-container">
+                <button id="speedBoostBtn" class="speed-boost-btn">⚡</button>
+                <div class="speed-boost-label">加速</div>
+            </div>
         </div>
         
-        <div class="instructions">
-            <h3>游戏说明:</h3>
-            <p>使用方向键控制蛇的移动</p>
-            <p>吃到食物可以增长身体和得分</p>
-            <p>避免撞到墙壁或自己的身体</p>
-            <p>🎁 金色宝箱会随机出现，捡到后可增长两节身体</p>
-            <p>💰 宝箱奖励50分，但存在时间有限，要及时收集</p>
+        <!-- 查看游戏说明按钮 -->
+        <div class="instructions-toggle">
+            <button id="showInstructionsBtn">查看游戏说明</button>
+        </div>
+        
+        <!-- 游戏说明弹窗 -->
+        <div id="instructionsModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>游戏说明</h3>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <p>使用方向键控制蛇的移动</p>
+                    <p>吃到食物可以增长身体和得分</p>
+                    <p>避免撞到墙壁或自己的身体</p>
+                    <p>🎁 金色宝箱会随机出现，捡到后可增长两节身体</p>
+                    <p>💰 宝箱奖励50分，但存在时间有限，要及时收集</p>
+                </div>
+            </div>
         </div>
     </div>
     <script src="game.js"></script>

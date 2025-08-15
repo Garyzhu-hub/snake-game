@@ -35,6 +35,9 @@ class SnakeGame {
         this.treasureTimer = 0;
         this.treasureLifetime = 100; // 宝箱存在时间（游戏循环次数）
         
+        // 加速功能
+        this.speedBoost = false;
+        
         this.initializeControls();
         this.setupKeyboardControls();
         this.drawGame();
@@ -59,6 +62,55 @@ class SnakeGame {
         if (downBtn) downBtn.addEventListener('click', () => this.changeDirection(0, 1));
         if (leftBtn) leftBtn.addEventListener('click', () => this.changeDirection(-1, 0));
         if (rightBtn) rightBtn.addEventListener('click', () => this.changeDirection(1, 0));
+        
+        // 加速按钮控制
+        const speedBoostBtn = document.getElementById('speedBoostBtn');
+        if (speedBoostBtn) {
+            speedBoostBtn.addEventListener('mousedown', () => this.setSpeedBoost(true));
+            speedBoostBtn.addEventListener('mouseup', () => this.setSpeedBoost(false));
+            speedBoostBtn.addEventListener('mouseleave', () => this.setSpeedBoost(false));
+            speedBoostBtn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                this.setSpeedBoost(true);
+            });
+            speedBoostBtn.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                this.setSpeedBoost(false);
+            });
+        }
+        
+        // 游戏说明弹窗事件
+        this.initializeModal();
+    }
+    
+    initializeModal() {
+        const modal = document.getElementById('instructionsModal');
+        const showBtn = document.getElementById('showInstructionsBtn');
+        const closeBtn = document.querySelector('.close');
+        
+        // 显示弹窗
+        showBtn.addEventListener('click', () => {
+            modal.style.display = 'block';
+        });
+        
+        // 关闭弹窗
+        closeBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+        
+        // 点击外部区域关闭弹窗
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+        
+        // ESC键关闭弹窗
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'block') {
+                modal.style.display = 'none';
+            }
+        });
     }
     
     changeDirection(newDx, newDy) {
@@ -72,6 +124,10 @@ class SnakeGame {
             this.dx = 0;
             this.dy = newDy;
         }
+    }
+    
+    setSpeedBoost(boost) {
+        this.speedBoost = boost;
     }
     
     setupKeyboardControls() {
@@ -162,6 +218,7 @@ class SnakeGame {
     gameLoop() {
         if (!this.gameRunning || this.gamePaused) return;
         
+        const gameSpeed = this.speedBoost ? 150 : 200;
         setTimeout(() => {
             this.clearCanvas();
             this.moveSnake();
@@ -189,7 +246,7 @@ class SnakeGame {
             }
             
             this.gameLoop();
-        }, 150);
+        }, gameSpeed);
     }
     
     clearCanvas() {
