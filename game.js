@@ -48,6 +48,30 @@ class SnakeGame {
         startBtn.addEventListener('click', () => this.startGame());
         pauseBtn.addEventListener('click', () => this.togglePause());
         resetBtn.addEventListener('click', () => this.resetGame());
+        
+        // 移动端方向控制
+        const upBtn = document.getElementById('upBtn');
+        const downBtn = document.getElementById('downBtn');
+        const leftBtn = document.getElementById('leftBtn');
+        const rightBtn = document.getElementById('rightBtn');
+        
+        if (upBtn) upBtn.addEventListener('click', () => this.changeDirection(0, -1));
+        if (downBtn) downBtn.addEventListener('click', () => this.changeDirection(0, 1));
+        if (leftBtn) leftBtn.addEventListener('click', () => this.changeDirection(-1, 0));
+        if (rightBtn) rightBtn.addEventListener('click', () => this.changeDirection(1, 0));
+    }
+    
+    changeDirection(newDx, newDy) {
+        if (!this.gameRunning || this.gamePaused) return;
+        
+        // 防止蛇反向移动
+        if (newDx !== 0 && this.dx !== -newDx) {
+            this.dx = newDx;
+            this.dy = 0;
+        } else if (newDy !== 0 && this.dy !== -newDy) {
+            this.dx = 0;
+            this.dy = newDy;
+        }
     }
     
     setupKeyboardControls() {
